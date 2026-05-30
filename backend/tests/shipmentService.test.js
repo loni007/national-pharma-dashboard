@@ -42,3 +42,17 @@ test('should delete an existing shipment', () => {
   expect(deletedShipment).not.toBeNull();
   expect(deletedShipment.id).toBe(2);
 });
+
+test('should return null when updating non-existing shipment', () => {
+  const result = shipmentService.updateShipment(999, {
+    status: 'Delivered'
+  });
+
+  expect(result).toBeNull();
+});
+
+test('should return null when deleting non-existing shipment', () => {
+  const result = shipmentService.deleteShipment(999);
+
+  expect(result).toBeNull();
+});

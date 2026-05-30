@@ -34,3 +34,17 @@ test('should delete an existing supplier', () => {
   expect(deletedSupplier).not.toBeNull();
   expect(deletedSupplier.id).toBe(2);
 });
+
+test('should return null when updating non-existing supplier', () => {
+  const result = supplierService.updateSupplier(999, {
+    country: 'Spain'
+  });
+
+  expect(result).toBeNull();
+});
+
+test('should return null when deleting non-existing supplier', () => {
+  const result = supplierService.deleteSupplier(999);
+
+  expect(result).toBeNull();
+});

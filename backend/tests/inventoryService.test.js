@@ -35,3 +35,17 @@ test('should delete an existing medicine', () => {
   expect(deletedMedicine).not.toBeNull();
   expect(deletedMedicine.id).toBe(2);
 });
+
+test('should return null when updating non-existing medicine', () => {
+  const result = inventoryService.updateMedicine(999, {
+    quantity: 100
+  });
+
+  expect(result).toBeNull();
+});
+
+test('should return null when deleting non-existing medicine', () => {
+  const result = inventoryService.deleteMedicine(999);
+
+  expect(result).toBeNull();
+});
