@@ -1,20 +1,11 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/inventory', (req, res) => {
-    res.json({ message: 'Get inventory' });
-});
+const inventoryController = require('../controllers/inventoryController');
 
-router.post('/inventory', (req, res) => {
-    res.json({ message: 'Add medicine' });
-});
-
-router.put('/inventory/:id', (req, res) => {
-    res.json({ message: `Update medicine ${req.params.id}` });
-});
-
-router.delete('/inventory/:id', (req, res) => {
-    res.json({ message: `Delete medicine ${req.params.id}` });
-});
+router.get('/inventory', inventoryController.getInventory);
+router.post('/inventory', inventoryController.createMedicine);
+router.put('/inventory/:id', inventoryController.updateMedicine);
+router.delete('/inventory/:id', inventoryController.deleteMedicine);
 
 module.exports = router;
