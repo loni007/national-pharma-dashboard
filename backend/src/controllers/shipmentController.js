@@ -16,11 +16,31 @@ function getShipment(req, res) {
 }
 
 function createShipment(req, res) {
+  const { supplierId, product, quantity, destination } = req.body;
+
+  if (!supplierId || !product || quantity === undefined || !destination) {
+    return res.status(400).json({
+      message: "Supplier ID, product, quantity, and destination are required"
+    });
+  }
+
+  if (quantity < 0) {
+    return res.status(400).json({
+      message: "Quantity cannot be negative"
+    });
+  }
+
   const newShipment = shipmentService.addShipment(req.body);
   res.status(201).json(newShipment);
 }
 
 function updateShipment(req, res) {
+  if (req.body.quantity !== undefined && req.body.quantity < 0) {
+    return res.status(400).json({
+      message: "Quantity cannot be negative"
+    });
+  }
+
   const updatedShipment = shipmentService.updateShipment(req.params.id, req.body);
 
   if (!updatedShipment) {

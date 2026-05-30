@@ -6,6 +6,14 @@ function getSuppliers(req, res) {
 }
 
 function createSupplier(req, res) {
+  const { name, contactEmail, phone, country } = req.body;
+
+  if (!name || !contactEmail || !phone || !country) {
+    return res.status(400).json({
+      message: "Name, contact email, phone, and country are required"
+    });
+  }
+
   const newSupplier = supplierService.addSupplier(req.body);
   res.status(201).json(newSupplier);
 }

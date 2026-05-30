@@ -14,4 +14,17 @@ app.use('/', supplierRoutes);
 app.use('/', shipmentRoutes);
 app.use('/', analyticsRoutes);
 
+app.get('/', (req, res) => {
+  res.json({
+    message: 'National Pharma Dashboard Backend API is running',
+    version: '1.0.0',
+    endpoints: [
+      '/inventory',
+      '/suppliers',
+      '/shipments',
+      '/analytics/dashboard'
+    ]
+  });
+});
+
 module.exports = app;
