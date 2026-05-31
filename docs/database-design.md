@@ -119,6 +119,24 @@ The schema uses constraints to protect data integrity:
 - Core codes are unique, including region codes, facility codes, medication codes, and
   external prescription references.
 
+## Data Quality Checklist
+
+Before prescription data is imported from a source system, the ingestion process should
+validate the file against the following checklist:
+
+- Required reference codes exist for region, facility, provider, medication, and
+  medication class.
+- Patient identifiers are hashed before loading and no direct personal identifiers are
+  included in the import file.
+- Prescription timestamps are present and use a consistent timezone.
+- Quantities are numeric, positive, and use the medication's expected unit of measure.
+- Dispensed quantity is blank for issued prescriptions or less than or equal to the
+  prescribed quantity.
+- Rejected records are counted in `import_batches` with a short rejection reason in the
+  batch notes or external ingestion log.
+- Forecast and alert generation jobs record the model version or detection rule that
+  produced each analytics output.
+
 ## Dashboard Views
 
 `v_daily_demand`
