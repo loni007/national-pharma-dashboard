@@ -28,6 +28,8 @@ docs/
                   Database design explanation and implementation notes
   api-database-contract.md
                   Mapping between dashboard/API features and database objects
+  acceptance-testing.md
+                  User-facing acceptance scenarios covered by automated tests
 ```
 
 ## Database Setup
@@ -115,4 +117,5 @@ The tests check that:
 - Privacy-sensitive patient fields are excluded
 - Important integrity constraints and indexes are present
 - Seed data covers regions, medicines, prescriptions, forecasts, and alerts
+- Acceptance scenarios cover demand monitoring, alert review, forecasting, and privacy
  
