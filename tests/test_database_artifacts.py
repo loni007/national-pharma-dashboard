@@ -6,6 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_SQL = (ROOT / "database" / "schema.sql").read_text(encoding="utf-8")
 SEED_SQL = (ROOT / "database" / "seed.sql").read_text(encoding="utf-8")
+EXAMPLE_QUERIES_SQL = (ROOT / "database" / "example_queries.sql").read_text(encoding="utf-8")
 
 
 def normalized(sql: str) -> str:
@@ -16,6 +17,7 @@ class DatabaseSchemaTests(unittest.TestCase):
     def setUp(self):
         self.schema = normalized(SCHEMA_SQL)
         self.seed = normalized(SEED_SQL)
+        self.example_queries = normalized(EXAMPLE_QUERIES_SQL)
 
     def test_required_tables_are_defined(self):
         required_tables = [
@@ -110,6 +112,19 @@ class DatabaseSchemaTests(unittest.TestCase):
 
         self.assertGreaterEqual(len(set(region_codes)), 5)
         self.assertGreaterEqual(len(set(medication_codes)), 5)
+
+    def test_example_queries_use_dashboard_views(self):
+        expected_references = [
+            "from v_daily_demand",
+            "from v_regional_demand_summary",
+            "from v_medication_demand_summary",
+            "from v_active_alerts",
+            "left join v_daily_demand",
+        ]
+
+        for reference in expected_references:
+            with self.subTest(reference=reference):
+                self.assertIn(reference, self.example_queries)
 
     def _table_block(self, table_name: str) -> str:
         match = re.search(

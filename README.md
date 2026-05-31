@@ -21,6 +21,8 @@ This version completes the database design and documentation work:
 database/
   schema.sql      PostgreSQL schema, constraints, indexes, and reporting views
   seed.sql        Sample reference data, prescriptions, forecasts, and alerts
+  example_queries.sql
+                  Example analytical queries for dashboard/API development
 docs/
   database-design.md
                   Database design explanation and implementation notes
@@ -52,6 +54,9 @@ main areas:
 - Dashboard views: daily demand, regional demand, medication demand, active alerts
 
 ## Example Dashboard Queries
+
+More complete dashboard query examples are available in
+`database/example_queries.sql`.
 
 Daily demand trend:
 
