@@ -1,1 +1,12 @@
 backend/node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+.env
+.venv/
+venv/
+node_modules/
+dist/
+build/
+.DS_Store
