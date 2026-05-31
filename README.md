@@ -108,14 +108,4 @@ The tests check that:
 - Privacy-sensitive patient fields are excluded
 - Important integrity constraints and indexes are present
 - Seed data covers regions, medicines, prescriptions, forecasts, and alerts
-
-## Publishing Checklist
-
-Before the Tuesday deadline:
-
-1. Commit this database implementation under Fadlan's Git account.
-2. Ask Hana and Musanif to commit their own backend/API, ML, and dashboard work from
-   their own accounts.
-3. Run `python -m unittest discover -s tests` before every push.
-4. Push to GitHub, GitLab, or Bitbucket.
-5. Make the repository public or add the instructor as a collaborator.
+ 
