@@ -8,6 +8,7 @@ SCHEMA_SQL = (ROOT / "database" / "schema.sql").read_text(encoding="utf-8")
 SEED_SQL = (ROOT / "database" / "seed.sql").read_text(encoding="utf-8")
 EXAMPLE_QUERIES_SQL = (ROOT / "database" / "example_queries.sql").read_text(encoding="utf-8")
 DATABASE_DOCS = (ROOT / "docs" / "database-design.md").read_text(encoding="utf-8")
+API_DATABASE_CONTRACT = (ROOT / "docs" / "api-database-contract.md").read_text(encoding="utf-8")
 
 
 def normalized(sql: str) -> str:
@@ -20,6 +21,7 @@ class DatabaseSchemaTests(unittest.TestCase):
         self.seed = normalized(SEED_SQL)
         self.example_queries = normalized(EXAMPLE_QUERIES_SQL)
         self.database_docs = normalized(DATABASE_DOCS)
+        self.api_database_contract = normalized(API_DATABASE_CONTRACT)
 
     def test_required_tables_are_defined(self):
         required_tables = [
@@ -141,6 +143,21 @@ class DatabaseSchemaTests(unittest.TestCase):
         for topic in expected_topics:
             with self.subTest(topic=topic):
                 self.assertIn(topic, self.database_docs)
+
+    def test_api_database_contract_maps_dashboard_sources(self):
+        expected_sources = [
+            "pharma.v_daily_demand",
+            "pharma.v_regional_demand_summary",
+            "pharma.v_medication_demand_summary",
+            "pharma.v_active_alerts",
+            "pharma.demand_forecasts",
+            "get /analytics/demand/daily",
+            "get /analytics/alerts/active",
+        ]
+
+        for source in expected_sources:
+            with self.subTest(source=source):
+                self.assertIn(source, self.api_database_contract)
 
     def _table_block(self, table_name: str) -> str:
         match = re.search(

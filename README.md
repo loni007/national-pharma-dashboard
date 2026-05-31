@@ -26,6 +26,8 @@ database/
 docs/
   database-design.md
                   Database design explanation and implementation notes
+  api-database-contract.md
+                  Mapping between dashboard/API features and database objects
 ```
 
 ## Database Setup
