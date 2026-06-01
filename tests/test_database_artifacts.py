@@ -9,6 +9,7 @@ SEED_SQL = (ROOT / "database" / "seed.sql").read_text(encoding="utf-8")
 EXAMPLE_QUERIES_SQL = (ROOT / "database" / "example_queries.sql").read_text(encoding="utf-8")
 DATABASE_DOCS = (ROOT / "docs" / "database-design.md").read_text(encoding="utf-8")
 API_DATABASE_CONTRACT = (ROOT / "docs" / "api-database-contract.md").read_text(encoding="utf-8")
+TESTING_STRATEGY = (ROOT / "docs" / "testing-strategy.md").read_text(encoding="utf-8")
 
 
 def normalized(sql: str) -> str:
@@ -22,6 +23,7 @@ class DatabaseSchemaTests(unittest.TestCase):
         self.example_queries = normalized(EXAMPLE_QUERIES_SQL)
         self.database_docs = normalized(DATABASE_DOCS)
         self.api_database_contract = normalized(API_DATABASE_CONTRACT)
+        self.testing_strategy = normalized(TESTING_STRATEGY)
 
     def test_required_tables_are_defined(self):
         required_tables = [
@@ -158,6 +160,20 @@ class DatabaseSchemaTests(unittest.TestCase):
         for source in expected_sources:
             with self.subTest(source=source):
                 self.assertIn(source, self.api_database_contract)
+
+    def test_testing_strategy_describes_development_and_acceptance_tests(self):
+        expected_topics = [
+            "development tests",
+            "acceptance scenario tests",
+            "python -m unittest discover -s tests",
+            "tests/test_database_artifacts.py",
+            "tests/test_acceptance_scenarios.py",
+            "npm test",
+        ]
+
+        for topic in expected_topics:
+            with self.subTest(topic=topic):
+                self.assertIn(topic, self.testing_strategy)
 
     def _table_block(self, table_name: str) -> str:
         match = re.search(

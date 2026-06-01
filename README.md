@@ -30,6 +30,8 @@ docs/
                   Mapping between dashboard/API features and database objects
   acceptance-testing.md
                   User-facing acceptance scenarios covered by automated tests
+  testing-strategy.md
+                  Explanation of development and acceptance test coverage
 ```
 
 ## Database Setup
@@ -118,4 +120,7 @@ The tests check that:
 - Important integrity constraints and indexes are present
 - Seed data covers regions, medicines, prescriptions, forecasts, and alerts
 - Acceptance scenarios cover demand monitoring, alert review, forecasting, and privacy
+
+See `docs/testing-strategy.md` for how the development tests and acceptance scenario
+tests are organized.
  
