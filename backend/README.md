@@ -6,10 +6,12 @@ The National Pharma Dashboard Backend is a RESTful API developed using Node.js a
 
 The system provides functionality for:
 
-* Inventory Management
-* Supplier Management
-* Shipment Management
-* Analytics and Reporting
+- Inventory Management
+- Supplier Management
+- Shipment Management
+- Prescription Analytics
+- Demand Forecasting
+- Analytics and Reporting
 
 The backend follows a layered architecture consisting of Routes, Controllers, and Services.
 

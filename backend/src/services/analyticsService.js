@@ -1,62 +1,90 @@
+const fs = require("fs");
+const path = require("path");
+
+const inventoryService = require("./inventoryService");
+const supplierService = require("./supplierService");
+const shipmentService = require("./shipmentService");
+
+const predictionsPath = path.join(
+  __dirname,
+  "../../../ml/data/predictions.json"
+);
+
+function readPredictionOutput() {
+  try {
+    const rawData = fs.readFileSync(predictionsPath, "utf-8");
+    return JSON.parse(rawData);
+  } catch (error) {
+    return {
+      predictions: [],
+      lowStockRisk: [],
+    };
+  }
+}
+
 function getDashboardSummary() {
+  const inventory = inventoryService.getAllInventory();
+  const suppliers = supplierService.getAllSuppliers();
+  const shipments = shipmentService.getAllShipments();
+  const predictionOutput = readPredictionOutput();
+
+  const activeShipments = shipments.filter(
+    (shipment) => shipment.status !== "Delivered"
+  );
+
+  const lowStockItems = predictionOutput.lowStockRisk.filter(
+    (item) => item.risk === "High" || item.risk === "Medium"
+  );
+
   return {
-    totalMedicines: 24,
-    totalSuppliers: 8,
-    activeShipments: 5,
-    lowStockItems: 3
+    totalMedicines: inventory.length,
+    totalSuppliers: suppliers.length,
+    activeShipments: activeShipments.length,
+    lowStockItems: lowStockItems.length,
   };
 }
 
 function getDemandPredictions() {
-  return [
-    {
-      medicine: "Paracetamol",
-      predictedDemandNextMonth: 1250,
-      riskLevel: "High"
-    },
-    {
-      medicine: "Amoxicillin",
-      predictedDemandNextMonth: 780,
-      riskLevel: "Medium"
-    }
-  ];
+  const output = readPredictionOutput();
+  return output.predictions;
 }
 
 function getTrendGraphs() {
   return [
     {
       medicine: "Paracetamol",
-      monthlyDemand: [900, 980, 1100, 1250]
+      monthlyDemand: [900, 980, 1100, 1250],
     },
     {
       medicine: "Amoxicillin",
-      monthlyDemand: [600, 650, 700, 780]
-    }
+      monthlyDemand: [600, 650, 700, 780],
+    },
+    {
+      medicine: "Ibuprofen",
+      monthlyDemand: [700, 760, 830, 980],
+    },
   ];
 }
 
 function getReports() {
+  const predictionOutput = readPredictionOutput();
+
+  const highRiskItems = predictionOutput.lowStockRisk.filter(
+    (item) => item.risk === "High"
+  );
+
   return {
     reportTitle: "Pharmaceutical Warehouse Monthly Report",
-    summary: "The system detected increasing demand for pain relief medicine and moderate demand growth for antibiotics."
+    summary:
+      highRiskItems.length > 0
+        ? `The system detected ${highRiskItems.length} high-risk medicine demand signal(s). Immediate review of stock levels is recommended.`
+        : "The system detected stable medicine demand patterns with no high-risk shortage alerts.",
   };
 }
 
 function getLowStockRisk() {
-  return [
-    {
-      medicine: "Paracetamol",
-      currentStock: 120,
-      predictedDemand: 1250,
-      risk: "High"
-    },
-    {
-      medicine: "Ibuprofen",
-      currentStock: 75,
-      predictedDemand: 600,
-      risk: "Medium"
-    }
-  ];
+  const output = readPredictionOutput();
+  return output.lowStockRisk;
 }
 
 module.exports = {
@@ -64,5 +92,5 @@ module.exports = {
   getDemandPredictions,
   getTrendGraphs,
   getReports,
-  getLowStockRisk
+  getLowStockRisk,
 };
